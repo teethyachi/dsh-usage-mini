@@ -1,10 +1,12 @@
 # Changelog
 
-## 0.1.2
+## 0.1.2 (unreleased)
 
-- Declare explicit compatibility in the manifest: `engines.node >=22.19.0`, `dsh.compatibility.dsh`, per-version `dshReleases` (`0.1.1-rc.2`, `0.1.2-rc.1` tested as compatible; other versions unknown), `profiles: ["web"]`, `os: ["win32"]`.
+- **Correction:** the first 0.1.2 draft declared `engines.node >=22.19.0` and marked DSH `0.1.1-rc.2` / `0.1.2-rc.1` as `compatible`. That overstated the evidence: only Node 22.23.2 was exercised, and the DSH checks were install, `--dump-config` configuration composition and uninstall, not a plugin runtime start. The manifest now declares `engines.node` as the exact tested `22.23.2`, omits `dsh.compatibility.dsh`, and lists `0.1.1-rc.2`, `0.1.2-alpha.4`, `0.1.2-alpha.5`, `0.1.2-rc.1` as `unknown` until reproducible full-profile runtime evidence exists.
+- Declare `dsh.compatibility.profiles: ["web"]` and `os: ["win32"]` (the only OS exercised).
+- README: install section distinguishes the tagged 0.1.1 release from the untagged corrected manifest; the "cannot crash the host" wording is qualified as a design statement.
 - Document permissions, network endpoints, dependencies, local storage and failure boundaries for DSH STORE review (README + `docs/store-evidence.md`).
-- Add regression tests for the compatibility manifest shape, the same-origin RPC endpoint list and the absence of lifecycle scripts.
+- Add regression tests for the compatibility manifest shape (exact tested Node, no `compatible` DSH release without documented start evidence), the same-origin RPC endpoint list and the absence of lifecycle scripts.
 - No runtime behaviour change; `lib/` and `cordis.patch.yml` are identical to 0.1.1.
 
 ## 0.1.1

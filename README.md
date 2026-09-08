@@ -15,7 +15,9 @@ A tiny floating usage dashboard for **DeepSeek Harness Web**. Check the meter wi
 
 ## Install
 
-Requires a compatible DeepSeek Harness Web installation and pnpm. This repository ships ready-to-load JavaScript; no build step or install script.
+Requires a DeepSeek Harness Web installation and pnpm. This repository ships ready-to-load JavaScript; no build step or install script. Compatibility with your DSH version is **not certified**; see [Compatibility](#compatibility-declared-in-packagejson).
+
+Latest tagged release (0.1.1 manifest; runtime files identical to `main`):
 
 ```sh
 dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.1.1
@@ -25,6 +27,12 @@ Or download the release tarball and run:
 
 ```sh
 dsh plugin --profile web add ./dsh-usage-mini-0.1.1.tgz
+```
+
+The corrected 0.1.2 manifest (this README) is not tagged or published yet. To install it, pin an immutable commit from the GitHub history instead of a branch:
+
+```sh
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#<commit-sha>
 ```
 
 Restart your existing Web profile, then refresh its page. Open Settings → 用量小窗 to show/hide the widget. The interface currently uses Chinese labels; this release’s documentation is English. Package ID stays `dsh-usage-mini` for compatibility; **USEAGE WINDOW** is the requested product spelling.
@@ -44,13 +52,12 @@ They are **not bundled or silently installed**. If an endpoint is unavailable, t
 
 | Field | Value | Evidence |
 |---|---|---|
-| Node.js (`engines.node`) | `>=22.19.0` | Exercised on Node 22.23.2 (Windows). Host DSH itself requires `^22.19.0 \|\| >=24.0.0`; the plugin has no Node-side logic beyond a no-op `apply()`. |
-| DSH (`dsh.compatibility.dshReleases`) | `0.1.1-rc.2`: compatible, `0.1.2-rc.1`: compatible | Disposable `DSH_HOME` profile: `dsh plugin --profile web add <tarball>`, `--dump-config` shows the `usage-mini` layer, `dsh plugin --profile web remove dsh-usage-mini` cleans up. See [docs/store-evidence.md](docs/store-evidence.md). |
-| Other DSH versions | unknown | Not tested; not claimed. |
+| Node.js (`engines.node`) | `22.23.2` (exact) | The only Node version actually exercised (Windows). Other Node versions, including the rest of DSH's own `^22.19.0 \|\| >=24.0.0` range, are untested and therefore not declared. |
+| DSH (`dsh.compatibility.dshReleases`) | `0.1.1-rc.2`, `0.1.2-alpha.4`, `0.1.2-alpha.5`, `0.1.2-rc.1`: **unknown** | No full `dsh --profile web` start with this plugin has been recorded as reproducible evidence. What exists: disposable-profile install/uninstall, `--dump-config` configuration composition (not a runtime start), and one isolated non-listening host-entry boot on `0.1.2-rc.1`. See [docs/store-evidence.md](docs/store-evidence.md). |
 | Profile | `web` only | Browser client; no headless/TUI behaviour. |
-| OS | Windows (`win32`) tested | Nothing OS-specific in the code, but only Windows was exercised. |
+| OS | Windows (`win32`) exercised | Nothing OS-specific in the code, but only Windows was exercised. |
 
-The manifest declarations are source compatibility statements. They are not a claim that DSH STORE has completed its own Profile install or runtime acceptance.
+**Correction (0.1.2, unreleased):** an earlier revision of this manifest declared `engines.node >=22.19.0` and marked two DSH releases `compatible`. That was overbroad: source-level compatibility and configuration composition are not self-certified full runtime compatibility. The values above are the honest state. They are not a claim that DSH STORE has completed its own Profile install or runtime acceptance, and a store listing may stay guarded or unlisted until real runtime evidence exists.
 
 ## Permissions, dependencies and failure boundaries
 
@@ -60,7 +67,7 @@ The manifest declarations are source compatibility statements. They are not a cl
 - **Local storage:** one browser `localStorage` key, `dsh-usage-mini:ui` (window position, collapsed state, visibility). No usage data is persisted by this plugin.
 - **On-screen data:** account labels returned by the subscriptions plugin and cached balances can be visible in the widget. Redact screenshots.
 - **Stale-cache semantics:** the DeepSeek balance is the cost-meter cached snapshot. Automatic polling only requests a refresh when no balance was ever fetched; the manual button forces a refresh. If the refresh fails, the previous snapshot stays with its own status message.
-- **Failure boundaries:** an RPC returning HTTP 404 is shown as “channel missing” for that section only; the other section keeps working. Any other error is displayed as text in that section. The plugin cannot crash the host: its host entry does nothing, and client errors are caught per section.
+- **Failure boundaries:** an RPC returning HTTP 404 is shown as “channel missing” for that section only; the other section keeps working. Any other error is displayed as text in that section. By design the host entry does nothing and client errors are caught per section, so the plugin is not expected to bring down the host; this is a design statement, not a tested guarantee across DSH versions.
 
 ## Read the numbers like an adult (tragic, we know)
 
@@ -92,6 +99,6 @@ If this widget saves you a tab, a GitHub Star or a Like on the Hugging Face Spac
 
 ## Release verification
 
-Run `npm test` and `npm pack --dry-run`. Automated checks cover package wiring and the balance-refresh regression; they are not a claim of fresh live-account testing on every provider or browser. The installed personal copy is not modified by this publication.
+Run `npm test` and `npm pack --dry-run`. Automated checks cover package wiring, the compatibility manifest shape and the balance-refresh regression; they are not a claim of fresh live-account testing on every provider or browser, nor of runtime validation on any DSH version. The installed personal copy is not modified by this publication.
 
 MIT licensed. Contributions welcome—especially accurate failure states, not confident-looking zeroes.
