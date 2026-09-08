@@ -1,8 +1,12 @@
 # Changelog
 
+## 0.1.4
+
+- Feedback bar prompt is now a single line, **给点儿意见？**, replacing the rotating prompts. Drops the prompt-rotation index from `dsh-usage-mini:feedback` local storage. No other change.
+
 ## 0.1.3
 
-- **New: feedback bar** at the bottom of the expanded window. Type one line, press 发送, and a pre-filled GitHub issue (`feedback.yml` template, label `feedback`) opens in a new tab. The plugin itself sends nothing: the only data placed in the URL is your text and the plugin version — never usage numbers, balances, account identifiers or tokens. Rotating prompts (哪个数字看不懂？/ 哪次刷新不对？/ 少了什么你每天都想看的？/ 告诉我如何改进), 500-character cap, 60-second local cooldown.
+- **New: feedback bar** at the bottom of the expanded window. Type one line, press 发送, and a pre-filled GitHub issue (`feedback.yml` template, label `feedback`) opens in a new tab. The plugin itself sends nothing: the only data placed in the URL is your text and the plugin version — never usage numbers, balances, account identifiers or tokens. Rotating prompts (replaced by 给点儿意见？ in 0.1.4), 500-character cap, 60-second local cooldown.
 - Add `.github/ISSUE_TEMPLATE/feedback.yml`. Every feedback issue gets a reply; adopted ones are credited in the CHANGELOG of the release that ships them.
 - README: new "Feedback" section describing exactly what the feedback bar does and does not transmit.
 - Add tests for the feedback URL builder (encoding, length cap, no sensitive fields) and the unchanged same-origin RPC endpoint list.

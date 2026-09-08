@@ -21,13 +21,13 @@ Requires a DeepSeek Harness Web installation and pnpm. This repository ships rea
 Latest tagged release:
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.1.3
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.1.4
 ```
 
 Or download the release tarball and run:
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.1.3.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.1.4.tgz
 ```
 
 To pin an exact commit instead of a tag:
@@ -65,7 +65,7 @@ They are **not bundled or silently installed**. If an endpoint is unavailable, t
 - **Lifecycle scripts:** none (`preinstall`/`install`/`postinstall`/`prepare` absent). **Runtime dependencies:** none; only `react` is required from the DSH web module loader.
 - **Network:** the browser client issues same-origin `fetch` POSTs to the current DSH origin only: `/subscriptions-auth/status`, `/subscriptions-auth/usage`, `/api/costMeter/getState`, `/api/costMeter/refreshBalance`. It never calls an external host itself. Upstream plugins (`dsh-plugin-subscriptions`, `dsh-cost-meter`) do contact Anthropic/OpenAI/DeepSeek on your behalf when serving those RPCs; a forced refresh triggers such upstream calls.
 - **Files / commands / credentials:** none. The host half is a no-op; the plugin reads no files, spawns no processes and never handles tokens. Credential state stays inside the upstream plugins.
-- **Local storage:** two browser `localStorage` keys: `dsh-usage-mini:ui` (window position, collapsed state, visibility) and `dsh-usage-mini:feedback` (last-send timestamp, send count, prompt rotation index). No usage data is persisted by this plugin.
+- **Local storage:** two browser `localStorage` keys: `dsh-usage-mini:ui` (window position, collapsed state, visibility) and `dsh-usage-mini:feedback` (last-send timestamp, send count). No usage data is persisted by this plugin.
 - **Feedback bar:** pressing 发送 calls `window.open` on a `https://github.com/teethyachi/dsh-usage-mini/issues/new?…` URL. That is a navigation in your browser, not a request made by the plugin; nothing is sent unless you then press Submit on GitHub. See [Feedback](#feedback-the-widget-is-built-from-your-issues).
 - **On-screen data:** account labels returned by the subscriptions plugin and cached balances can be visible in the widget. Redact screenshots.
 - **Stale-cache semantics:** the DeepSeek balance is the cost-meter cached snapshot. Automatic polling only requests a refresh when no balance was ever fetched; the manual button forces a refresh. If the refresh fails, the previous snapshot stays with its own status message.
@@ -86,14 +86,14 @@ Browser localStorage keeps display preferences. Account labels and balances can 
 
 ## Feedback: the widget is built from your issues
 
-The bottom of the expanded window has a one-line input with a rotating prompt (哪个数字看不懂？/ 哪次刷新不对？/ 少了什么你每天都想看的？/ 告诉我如何改进). Type, press 发送, and a **pre-filled GitHub issue** opens in a new tab. Press Submit there and you're done.
+The bottom of the expanded window has a one-line input that asks **给点儿意见？** Type, press 发送, and a **pre-filled GitHub issue** opens in a new tab. Press Submit there and you're done.
 
 What goes into that URL, and nothing else:
 
 | Field | Value |
 |---|---|
 | `feedback` | your text, trimmed, max 500 characters |
-| `version` | the plugin version string (e.g. `0.1.3`) |
+| `version` | the plugin version string (e.g. `0.1.4`) |
 | `title` / `labels` / `template` | `[反馈] …`, `feedback`, `feedback.yml` |
 
 Never included: usage percentages, balances, spend, account labels, subscription state, tokens, or anything read from the DSH RPCs. A 60-second local cooldown and the 500-character cap are enforced in the browser. If your browser blocks the pop-up, the widget shows a plain link instead.
