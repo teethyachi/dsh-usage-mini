@@ -40,6 +40,28 @@ This is a display plugin, not a replacement account connector. Enable these sepa
 
 They are **not bundled or silently installed**. If an endpoint is unavailable, that section shows a notice; the other section can still work. Compatibility depends on these RPC contracts, not merely having a similarly named package installed.
 
+## Compatibility (declared in `package.json`)
+
+| Field | Value | Evidence |
+|---|---|---|
+| Node.js (`engines.node`) | `>=22.19.0` | Exercised on Node 22.23.2 (Windows). Host DSH itself requires `^22.19.0 \|\| >=24.0.0`; the plugin has no Node-side logic beyond a no-op `apply()`. |
+| DSH (`dsh.compatibility.dshReleases`) | `0.1.1-rc.2`: compatible, `0.1.2-rc.1`: compatible | Disposable `DSH_HOME` profile: `dsh plugin --profile web add <tarball>`, `--dump-config` shows the `usage-mini` layer, `dsh plugin --profile web remove dsh-usage-mini` cleans up. See [docs/store-evidence.md](docs/store-evidence.md). |
+| Other DSH versions | unknown | Not tested; not claimed. |
+| Profile | `web` only | Browser client; no headless/TUI behaviour. |
+| OS | Windows (`win32`) tested | Nothing OS-specific in the code, but only Windows was exercised. |
+
+The manifest declarations are source compatibility statements. They are not a claim that DSH STORE has completed its own Profile install or runtime acceptance.
+
+## Permissions, dependencies and failure boundaries
+
+- **Lifecycle scripts:** none (`preinstall`/`install`/`postinstall`/`prepare` absent). **Runtime dependencies:** none; only `react` is required from the DSH web module loader.
+- **Network:** the browser client issues same-origin `fetch` POSTs to the current DSH origin only: `/subscriptions-auth/status`, `/subscriptions-auth/usage`, `/api/costMeter/getState`, `/api/costMeter/refreshBalance`. It never calls an external host itself. Upstream plugins (`dsh-plugin-subscriptions`, `dsh-cost-meter`) do contact Anthropic/OpenAI/DeepSeek on your behalf when serving those RPCs; a forced refresh triggers such upstream calls.
+- **Files / commands / credentials:** none. The host half is a no-op; the plugin reads no files, spawns no processes and never handles tokens. Credential state stays inside the upstream plugins.
+- **Local storage:** one browser `localStorage` key, `dsh-usage-mini:ui` (window position, collapsed state, visibility). No usage data is persisted by this plugin.
+- **On-screen data:** account labels returned by the subscriptions plugin and cached balances can be visible in the widget. Redact screenshots.
+- **Stale-cache semantics:** the DeepSeek balance is the cost-meter cached snapshot. Automatic polling only requests a refresh when no balance was ever fetched; the manual button forces a refresh. If the refresh fails, the previous snapshot stays with its own status message.
+- **Failure boundaries:** an RPC returning HTTP 404 is shown as “channel missing” for that section only; the other section keeps working. Any other error is displayed as text in that section. The plugin cannot crash the host: its host entry does nothing, and client errors are caught per section.
+
 ## Read the numbers like an adult (tragic, we know)
 
 - Subscription percentages are upstream usage windows, not money and not a per-chat bill.

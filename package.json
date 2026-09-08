@@ -1,6 +1,6 @@
 {
   "name": "dsh-usage-mini",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -8,6 +8,12 @@
     "./client": "./lib/client.js",
     "./package.json": "./package.json"
   },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "os": [
+    "win32"
+  ],
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
@@ -15,6 +21,16 @@
     "client": {
       "platform": "web",
       "inject": []
+    },
+    "compatibility": {
+      "dsh": "0.1.1-rc.2 || 0.1.2-rc.1",
+      "dshReleases": {
+        "0.1.1-rc.2": "compatible",
+        "0.1.2-rc.1": "compatible"
+      },
+      "profiles": [
+        "web"
+      ]
     }
   },
   "description": "USEAGE WINDOW: a tiny DeepSeek Harness usage dashboard. Currently supports Claude and Codex subscriptions, plus DeepSeek API only.",
