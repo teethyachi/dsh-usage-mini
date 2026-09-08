@@ -61,6 +61,13 @@ dsh plugin --profile web remove dsh-usage-mini
 
 Restart the Web profile.
 
+## Links
+
+- Hugging Face Space (project page / mirror): https://huggingface.co/spaces/BruceWuu/useage-window
+- 中文介绍（为什么做这个小窗）: [docs/blog-zh.md](docs/blog-zh.md)
+
+If this widget saves you a tab, a GitHub Star or a Like on the Hugging Face Space helps other DSH users find it. Bug reports and PRs are more useful still.
+
 ## Release verification
 
 Run `npm test` and `npm pack --dry-run`. Automated checks cover package wiring and the balance-refresh regression; they are not a claim of fresh live-account testing on every provider or browser. The installed personal copy is not modified by this publication.
