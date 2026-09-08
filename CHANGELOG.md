@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+- **UI follows the DSH language setting.** The widget and its Settings card read the host's `<html lang>` (`zh-CN` / `en`, as set by Settings → Language) and switch live when it changes; fallback is `navigator.language`, then English. No own language switch, no new storage key. All ~70 strings are externalized in `STR.zh` / `STR.en`; the feedback prompt is 给点儿意见？ / Any feedback?.
+- **English-first repository.** README.md is English; `README.zh-CN.md` added. Issue template is English (feedback body may be any language). Promo copy lives in `docs/promo-en.md` and `docs/promo-zh.md` as two independent systems.
+- Test: zh/en dictionaries share one key set, the English dictionary contains no CJK, and locale detection follows `<html lang>` → `navigator.language` → `en`.
+- No change to data paths: the same four same-origin RPCs, no new network endpoints.
+
 ## 0.1.4
 
 - Feedback bar prompt is now a single line, **给点儿意见？**, replacing the rotating prompts. Drops the prompt-rotation index from `dsh-usage-mini:feedback` local storage. No other change.

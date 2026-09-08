@@ -1,23 +1,24 @@
-name: 反馈 / Feedback
-description: 用量小窗里点「发送」会预填这个表单。一句话也行。/ Pre-filled from the widget. One line is enough.
-title: "[反馈] "
+name: Feedback
+description: Pre-filled from the USEAGE WINDOW widget's feedback bar. One line is enough.
+title: "[feedback] "
 labels: ["feedback"]
 body:
   - type: textarea
     id: feedback
     attributes:
-      label: 你的反馈 / Your feedback
-      description: 哪个数字看不懂？哪次刷新不对？少了什么你每天都想看的？
-      placeholder: 给点儿意见？
+      label: Your feedback
+      description: Which number was unclear? Which refresh looked wrong? What do you check every day that is missing?
+      placeholder: Any feedback?
     validations:
       required: true
   - type: input
     id: version
     attributes:
-      label: 插件版本 / Plugin version
-      placeholder: "0.1.4"
+      label: Plugin version
+      placeholder: "0.2.0"
   - type: markdown
     attributes:
       value: |
-        每条反馈都会得到回复（采纳 / 不采纳 + 原因）。采纳的会在下一版 CHANGELOG 里引用这个 issue。
-        Every issue gets a reply. Adopted ones are credited in the next release's CHANGELOG.
+        This form is in English; write the feedback body in any language you like — the reply comes back in the language you used.
+
+        Every issue gets a reply (adopted / not adopted, with the reason). Adopted ones are credited in the CHANGELOG of the release that ships them.

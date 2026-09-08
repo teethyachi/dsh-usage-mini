@@ -1,18 +1,23 @@
+English | [简体中文](README.zh-CN.md)
+
 # 用量小窗（USEAGE WINDOW）
 
 **Your agents have big plans. Your quota has office hours.**
 
-A tiny floating usage dashboard for **DeepSeek Harness Web**. Check the meter without turning your workflow into a browser-tab scavenger hunt. Think campus budget committee, minus the three-hour meeting.
+A companion floating window for [`dsh-cost-meter`](https://github.com/Han-1413141/dsh-cost-meter) and `dsh-plugin-subscriptions`: they collect the numbers, this one keeps them on screen.
+
+A tiny floating usage dashboard for **DeepSeek Harness Web**. Check the meter without turning your workflow into a browser-tab scavenger hunt.
 
 > **Currently supports Claude subscriptions, Codex (ChatGPT) subscriptions, and DeepSeek API only.** Not a universal billing dashboard. Not an official Anthropic, OpenAI, or DeepSeek product.
 
 ## What you get
 
 - **Claude + Codex subscriptions:** available usage windows, used/remaining percentages, reset times and countdowns. No made-up dollar balance for a subscription.
-- **DeepSeek API:** today’s locally recorded official-provider spend and calls, plus the upstream cached official account balance. Includes a Flash breakdown when present.
+- **DeepSeek API:** today's locally recorded official-provider spend and calls, plus the upstream cached official account balance. Includes a Flash breakdown when present.
+- **Follows your DSH language setting.** The widget reads the host's `<html lang>` and renders in Chinese or English, switching live when you change Settings → Language. It has no language switch of its own, because you already have one.
 - Drag it where you want. Collapse it into the nearest corner. It remembers its spot in this browser.
 - Settings toggle, manual refresh, and 60-second polling while expanded and the page is visible. Collapsed or hidden? No polling busywork. Your usage monitor should not need its own usage monitor.
-- **A feedback bar** at the bottom of the window. One line, press 发送, and a pre-filled GitHub issue opens. Every issue gets a reply; adopted ones ship in the next release with credit. See [Feedback](#feedback-the-widget-is-built-from-your-issues).
+- **A feedback bar** at the bottom of the window. One line, press Send, and a pre-filled GitHub issue opens. Every issue gets a reply; adopted ones ship in the next release with credit. See [Feedback](#feedback-the-widget-is-built-from-your-issues).
 
 ## Install
 
@@ -21,13 +26,13 @@ Requires a DeepSeek Harness Web installation and pnpm. This repository ships rea
 Latest tagged release:
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.1.4
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.0
 ```
 
 Or download the release tarball and run:
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.1.4.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.2.0.tgz
 ```
 
 To pin an exact commit instead of a tag:
@@ -36,7 +41,7 @@ To pin an exact commit instead of a tag:
 dsh plugin --profile web add github:teethyachi/dsh-usage-mini#<commit-sha>
 ```
 
-Restart your existing Web profile, then refresh its page. Open Settings → 用量小窗 to show/hide the widget. The interface currently uses Chinese labels; this release’s documentation is English. Package ID stays `dsh-usage-mini` for compatibility; **USEAGE WINDOW** is the requested product spelling.
+Restart your existing Web profile, then refresh its page. Open Settings → 用量小窗 to show/hide the widget. Package ID stays `dsh-usage-mini` for compatibility; **USEAGE WINDOW** is the requested product spelling.
 
 ### Required data providers
 
@@ -66,35 +71,35 @@ They are **not bundled or silently installed**. If an endpoint is unavailable, t
 - **Network:** the browser client issues same-origin `fetch` POSTs to the current DSH origin only: `/subscriptions-auth/status`, `/subscriptions-auth/usage`, `/api/costMeter/getState`, `/api/costMeter/refreshBalance`. It never calls an external host itself. Upstream plugins (`dsh-plugin-subscriptions`, `dsh-cost-meter`) do contact Anthropic/OpenAI/DeepSeek on your behalf when serving those RPCs; a forced refresh triggers such upstream calls.
 - **Files / commands / credentials:** none. The host half is a no-op; the plugin reads no files, spawns no processes and never handles tokens. Credential state stays inside the upstream plugins.
 - **Local storage:** two browser `localStorage` keys: `dsh-usage-mini:ui` (window position, collapsed state, visibility) and `dsh-usage-mini:feedback` (last-send timestamp, send count). No usage data is persisted by this plugin.
-- **Feedback bar:** pressing 发送 calls `window.open` on a `https://github.com/teethyachi/dsh-usage-mini/issues/new?…` URL. That is a navigation in your browser, not a request made by the plugin; nothing is sent unless you then press Submit on GitHub. See [Feedback](#feedback-the-widget-is-built-from-your-issues).
+- **Feedback bar:** pressing Send calls `window.open` on a `https://github.com/teethyachi/dsh-usage-mini/issues/new?…` URL. That is a navigation in your browser, not a request made by the plugin; nothing is sent unless you then press Submit on GitHub. See [Feedback](#feedback-the-widget-is-built-from-your-issues).
 - **On-screen data:** account labels returned by the subscriptions plugin and cached balances can be visible in the widget. Redact screenshots.
 - **Stale-cache semantics:** the DeepSeek balance is the cost-meter cached snapshot. Automatic polling only requests a refresh when no balance was ever fetched; the manual button forces a refresh. If the refresh fails, the previous snapshot stays with its own status message.
-- **Failure boundaries:** an RPC returning HTTP 404 is shown as “channel missing” for that section only; the other section keeps working. Any other error is displayed as text in that section. By design the host entry does nothing and client errors are caught per section, so the plugin is not expected to bring down the host; this is a design statement, not a tested guarantee across DSH versions.
+- **Failure boundaries:** an RPC returning HTTP 404 is shown as "channel missing" for that section only; the other section keeps working. Any other error is displayed as text in that section. By design the host entry does nothing and client errors are caught per section, so the plugin is not expected to bring down the host; this is a design statement, not a tested guarantee across DSH versions.
 
 ## Read the numbers like an adult (tragic, we know)
 
 - Subscription percentages are upstream usage windows, not money and not a per-chat bill.
-- Today’s DeepSeek spend comes from the cost-meter ledger (`deepseek` / `deepseek-official` routes). It is **not guaranteed to include every charge on your provider account**. Currency conversion uses cost-meter settings.
+- Today's DeepSeek spend comes from the cost-meter ledger (`deepseek` / `deepseek-official` routes). It is **not guaranteed to include every charge on your provider account**. Currency conversion uses cost-meter settings.
 - Balance is a cached snapshot. Manual refresh requests an update; network/provider failures can leave an older snapshot.
 - This widget does **not** enforce budgets, stop agents, switch models, or promise savings.
 
 ## Privacy & implementation
 
-A no-op host entry plus a browser client using DSH’s module loader and `settings.section` slot. Requests go to the current DSH origin: `/subscriptions-auth/status`, `/subscriptions-auth/usage`, `/api/costMeter/getState`, and `/api/costMeter/refreshBalance`. Existing host plugins handle upstream authentication. This package adds no external analytics or credential-entry UI.
+A no-op host entry plus a browser client using DSH's module loader and `settings.section` slot. Requests go to the current DSH origin: `/subscriptions-auth/status`, `/subscriptions-auth/usage`, `/api/costMeter/getState`, and `/api/costMeter/refreshBalance`. Existing host plugins handle upstream authentication. This package adds no external analytics or credential-entry UI.
 
 Browser localStorage keeps display preferences. Account labels and balances can appear on screen: redact screenshots before sharing. Never publish your DSH profile, credentials, ledger, or session history.
 
 ## Feedback: the widget is built from your issues
 
-The bottom of the expanded window has a one-line input that asks **给点儿意见？** Type, press 发送, and a **pre-filled GitHub issue** opens in a new tab. Press Submit there and you're done.
+The bottom of the expanded window has a one-line input that asks **Any feedback?** (**给点儿意见？** in Chinese). Type, press Send, and a **pre-filled GitHub issue** opens in a new tab. Press Submit there and you're done.
 
 What goes into that URL, and nothing else:
 
 | Field | Value |
 |---|---|
 | `feedback` | your text, trimmed, max 500 characters |
-| `version` | the plugin version string (e.g. `0.1.4`) |
-| `title` / `labels` / `template` | `[反馈] …`, `feedback`, `feedback.yml` |
+| `version` | the plugin version string (e.g. `0.2.0`) |
+| `title` / `labels` / `template` | `[feedback] …` (`[反馈] …` in Chinese), `feedback`, `feedback.yml` |
 
 Never included: usage percentages, balances, spend, account labels, subscription state, tokens, or anything read from the DSH RPCs. A 60-second local cooldown and the 500-character cap are enforced in the browser. If your browser blocks the pop-up, the widget shows a plain link instead.
 
