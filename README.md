@@ -2,6 +2,8 @@ English | [简体中文](README.zh-CN.md)
 
 # 用量小窗（USEAGE WINDOW）
 
+![USEAGE WINDOW — Claude/Codex usage windows with reset countdowns next to DeepSeek API spend, in one floating window](docs/promo.png)
+
 **Your agents have big plans. Your quota has office hours.**
 
 A companion floating window for [`dsh-cost-meter`](https://github.com/Han-1413141/dsh-cost-meter) and `dsh-plugin-subscriptions`: they collect the numbers, this one keeps them on screen.

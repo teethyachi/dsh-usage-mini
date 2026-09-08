@@ -2,6 +2,8 @@
 
 # 用量小窗（USEAGE WINDOW）
 
+![用量小窗 — Claude/Codex 订阅窗口与重置倒计时，加上 DeepSeek API 消耗，一个悬浮小窗](docs/promo.png)
+
 **Agent 的野心是无限的，你的额度是有班次的。**
 
 它是 [`dsh-cost-meter`](https://github.com/Han-1413141/dsh-cost-meter) 和 `dsh-plugin-subscriptions` 的搭档小窗：数据由它们去取，这个窗口只负责让数字一直待在你眼皮底下。
