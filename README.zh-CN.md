@@ -26,13 +26,13 @@
 最新的 tag 版本：
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.0
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.1
 ```
 
 或者下载 release 的 tarball：
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.2.0.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.2.1.tgz
 ```
 
 想钉死到某个具体 commit：
@@ -59,7 +59,7 @@ dsh plugin --profile web add github:teethyachi/dsh-usage-mini#<commit-sha>
 | 字段 | 值 | 依据 |
 |---|---|---|
 | Node.js（`engines.node`） | `22.23.2`（精确版本） | 实际跑过的只有这一个 Node 版本（Windows）。DSH 自己声明的 `^22.19.0 \|\| >=24.0.0` 里的其余版本都没测过，所以不声明。 |
-| DSH（`dsh.compatibility.dshReleases`） | `0.1.1-rc.2`、`0.1.2-alpha.4`、`0.1.2-alpha.5`、`0.1.2-rc.1`：均为 **unknown** | 没有一次带着这个插件的完整 `dsh --profile web` 启动被记录为可复现证据。现有的只是：一次性 profile 的安装/卸载、`--dump-config` 的配置合成（不是运行时启动），以及在 `0.1.2-rc.1` 上一次不监听端口的宿主入口引导。见 [docs/store-evidence.md](docs/store-evidence.md)。 |
+| DSH（`dsh.compatibility.dshReleases`） | `0.1.2-rc.1`：**compatible** · `0.1.1-rc.2`、`0.1.2-alpha.4`、`0.1.2-alpha.5`：**unknown** | `0.1.2-rc.1`：在一次性 `DSH_HOME` 里完整 `dsh --profile web` 启动、客户端经真实 web 模块加载器下发、无头浏览器在 zh-CN 与 en-US 下渲染且零页面错误、干净卸载——见 [docs/store-evidence.md](docs/store-evidence.md)。另外三个只有安装/合成证据（rc.2）或没有证据（alpha），保持 `unknown`。 |
 | Profile | 仅 `web` | 纯浏览器端，没有 headless / TUI 行为。 |
 | 操作系统 | 只跑过 Windows（`win32`） | 代码里没有任何跟系统相关的东西，但确实只在 Windows 上跑过。 |
 

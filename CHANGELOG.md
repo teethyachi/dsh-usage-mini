@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Treat HTTP 405 from an RPC path like 404: both mean the upstream plugin isn't installed, so the section shows "channel unavailable" instead of "fetch failed: HTTP 405". Found by the full-start acceptance run below.
+- DSH `0.1.2-rc.1` declared **compatible**: full `dsh --profile web` start from a disposable `DSH_HOME`, client delivered through the real web module loader, headless-browser render in zh-CN and en-US with zero page errors, then clean uninstall. Evidence and reproduce steps in `docs/store-evidence.md`.
+
 ## 0.2.0
 
 - **UI follows the DSH language setting.** The widget and its Settings card read the host's `<html lang>` (`zh-CN` / `en`, as set by Settings → Language) and switch live when it changes; fallback is `navigator.language`, then English. No own language switch, no new storage key. All ~70 strings are externalized in `STR.zh` / `STR.en`; the feedback prompt is 给点儿意见？ / Any feedback?.

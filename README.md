@@ -26,13 +26,13 @@ Requires a DeepSeek Harness Web installation and pnpm. This repository ships rea
 Latest tagged release:
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.0
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.1
 ```
 
 Or download the release tarball and run:
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.2.0.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.2.1.tgz
 ```
 
 To pin an exact commit instead of a tag:
@@ -59,7 +59,7 @@ They are **not bundled or silently installed**. If an endpoint is unavailable, t
 | Field | Value | Evidence |
 |---|---|---|
 | Node.js (`engines.node`) | `22.23.2` (exact) | The only Node version actually exercised (Windows). Other Node versions, including the rest of DSH's own `^22.19.0 \|\| >=24.0.0` range, are untested and therefore not declared. |
-| DSH (`dsh.compatibility.dshReleases`) | `0.1.1-rc.2`, `0.1.2-alpha.4`, `0.1.2-alpha.5`, `0.1.2-rc.1`: **unknown** | No full `dsh --profile web` start with this plugin has been recorded as reproducible evidence. What exists: disposable-profile install/uninstall, `--dump-config` configuration composition (not a runtime start), and one isolated non-listening host-entry boot on `0.1.2-rc.1`. See [docs/store-evidence.md](docs/store-evidence.md). |
+| DSH (`dsh.compatibility.dshReleases`) | `0.1.2-rc.1`: **compatible** · `0.1.1-rc.2`, `0.1.2-alpha.4`, `0.1.2-alpha.5`: **unknown** | `0.1.2-rc.1`: full `dsh --profile web` start from a disposable `DSH_HOME`, client delivered through the real web module loader, headless-browser render in zh-CN and en-US with zero page errors, clean uninstall — see [docs/store-evidence.md](docs/store-evidence.md). The other three have only install/composition evidence (rc.2) or none (alphas) and stay `unknown`. |
 | Profile | `web` only | Browser client; no headless/TUI behaviour. |
 | OS | Windows (`win32`) exercised | Nothing OS-specific in the code, but only Windows was exercised. |
 
