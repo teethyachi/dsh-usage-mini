@@ -2,7 +2,7 @@
 
 # 用量小窗（USEAGE WINDOW）
 
-[![npm](https://img.shields.io/npm/v/dsh-usage-mini?label=npm&color=4176E6)](https://www.npmjs.com/package/dsh-usage-mini) [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![dsh](https://img.shields.io/badge/DeepSeek%20Harness-dsh--plugin-4176E6)](https://github.com/deepseek-ai/deepseek-harness) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Space-useage--window-yellow)](https://huggingface.co/spaces/BruceWuu/useage-window)
+[![npm](https://img.shields.io/npm/v/dsh-usage-mini?label=npm&color=4176E6)](https://www.npmjs.com/package/dsh-usage-mini) [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![dsh](https://img.shields.io/badge/DeepSeek%20Harness-dsh--plugin-4176E6)](https://github.com/deepseek-ai/deepseek-harness) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Space-useage--window-yellow)](https://huggingface.co/spaces/BruceWuu/useage-window) [![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/teethyachi/dsh-usage-mini)
 
 ![用量小窗 — Claude/Codex 订阅窗口与重置倒计时，加上 DeepSeek API 消耗，一个悬浮小窗](docs/promo.png)
 
