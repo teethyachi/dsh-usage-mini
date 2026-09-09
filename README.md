@@ -2,6 +2,8 @@ English | [简体中文](README.zh-CN.md)
 
 # 用量小窗（USEAGE WINDOW）
 
+[![npm](https://img.shields.io/npm/v/dsh-usage-mini?label=npm&color=4176E6)](https://www.npmjs.com/package/dsh-usage-mini) [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![dsh](https://img.shields.io/badge/DeepSeek%20Harness-dsh--plugin-4176E6)](https://github.com/deepseek-ai/deepseek-harness) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Space-useage--window-yellow)](https://huggingface.co/spaces/BruceWuu/useage-window)
+
 ![USEAGE WINDOW — Claude/Codex usage windows with reset countdowns next to DeepSeek API spend, in one floating window](docs/promo.png)
 
 **Your agents have big plans. Your quota has office hours.**
@@ -25,7 +27,13 @@ A tiny floating usage dashboard for **DeepSeek Harness Web**. Check the meter wi
 
 Requires a DeepSeek Harness Web installation and pnpm. This repository ships ready-to-load JavaScript; no build step or install script. Compatibility with your DSH version is **not certified**; see [Compatibility](#compatibility-declared-in-packagejson).
 
-Latest tagged release:
+From npm (recommended; also what plugin managers such as dsh-extension-hub use):
+
+```sh
+dsh plugin --profile web add dsh-usage-mini
+```
+
+From the latest tagged release on GitHub:
 
 ```sh
 dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.2

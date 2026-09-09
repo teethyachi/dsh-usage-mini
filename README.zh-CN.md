@@ -2,6 +2,8 @@
 
 # 用量小窗（USEAGE WINDOW）
 
+[![npm](https://img.shields.io/npm/v/dsh-usage-mini?label=npm&color=4176E6)](https://www.npmjs.com/package/dsh-usage-mini) [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![dsh](https://img.shields.io/badge/DeepSeek%20Harness-dsh--plugin-4176E6)](https://github.com/deepseek-ai/deepseek-harness) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Space-useage--window-yellow)](https://huggingface.co/spaces/BruceWuu/useage-window)
+
 ![用量小窗 — Claude/Codex 订阅窗口与重置倒计时，加上 DeepSeek API 消耗，一个悬浮小窗](docs/promo.png)
 
 **Agent 的野心是无限的，你的额度是有班次的。**
@@ -25,7 +27,13 @@
 
 需要已经装好的 DeepSeek Harness Web 和 pnpm。仓库里放的就是可直接加载的 JavaScript，没有构建步骤，也没有安装脚本。和你手上这版 DSH 的兼容性**未经认证**，见[兼容性](#兼容性package.json-里怎么写的)。
 
-最新的 tag 版本：
+从 npm 装（推荐；dsh-extension-hub 这类插件管理器也走这条）：
+
+```sh
+dsh plugin --profile web add dsh-usage-mini
+```
+
+从 GitHub 最新的 tag 版本装：
 
 ```sh
 dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.2
