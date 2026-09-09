@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- All four corners work. Before: dragging the expanded window toward the right or bottom edge let it run off-screen (only the top/left were clamped), so top-right / bottom-left / bottom-right "custom" spots came back partly hidden after collapse → expand. Now: drag and restore are clamped to the viewport on both axes; a collapsed bar dragged to a new corner expands at that corner instead of flying back to the old spot; a viewport resize re-runs placement. Reproducible with `useage-window-campaign/scripts/corners.cjs` (headless Chromium, drag/collapse/expand at each corner); test 8 locks the geometry. The 掘金 write-up admitted "另外三个角布局是坏的" — this is that fix.
+
 ## 0.2.1
 
 - Treat HTTP 405 from an RPC path like 404: both mean the upstream plugin isn't installed, so the section shows "channel unavailable" instead of "fetch failed: HTTP 405". Found by the full-start acceptance run below.

@@ -7,3 +7,30 @@ test('manual refresh updates an already healthy balance; automatic refresh keeps
 test('feedback URL carries only text and version, capped and encoded, to the project repo',()=>{const from=source.indexOf('    function buildFeedbackUrl(');const to=source.indexOf('    function loadFeedbackState(');assert.ok(from>=0&&to>from);const consts=[...source.matchAll(/^\s*const (PLUGIN_VERSION|FEEDBACK_REPO|FEEDBACK_MAX_CHARS)\s*=\s*([^\n]+)$/gm)].map(m=>'const '+m[1]+' = '+m[2]).join('\n')+"\nconst FEEDBACK_PROMPT='给点儿意见？';const t=(k)=>k==='feedbackTitlePrefix'?'[反馈] ':k;";const ctx={URLSearchParams};vm.createContext(ctx);vm.runInContext(consts+'\n'+source.slice(from,to)+';this.build=buildFeedbackUrl;this.prompt=FEEDBACK_PROMPT;this.ver=PLUGIN_VERSION;this.max=FEEDBACK_MAX_CHARS',ctx);const p=JSON.parse(readFileSync(new URL('../package.json',import.meta.url)));assert.equal(ctx.ver,p.version,'PLUGIN_VERSION in client.js must match package.json');assert.equal(ctx.build('   '),null);const long='x'.repeat(ctx.max+50)+'\n第二行';const u=new URL(ctx.build('  余额 & 100% <b>看不懂</b>\n第二行  ','9.9.9'));assert.equal(u.origin+u.pathname,'https://github.com/teethyachi/dsh-usage-mini/issues/new');assert.deepEqual([...u.searchParams.keys()].sort(),['feedback','labels','template','title','version']);assert.equal(u.searchParams.get('feedback'),'余额 & 100% <b>看不懂</b>\n第二行');assert.equal(u.searchParams.get('version'),'9.9.9');assert.equal(u.searchParams.get('template'),'feedback.yml');assert.equal(u.searchParams.get('labels'),'feedback');assert.equal(u.searchParams.get('title'),'[反馈] 余额 & 100% <b>看不懂</b>');const capped=new URL(ctx.build(long));assert.equal(capped.searchParams.get('feedback').length,ctx.max);assert.equal(ctx.prompt,'给点儿意见？');});
 test('feedback bar opens GitHub via window.open only; no plugin-side network to external hosts',()=>{const opens=[...source.matchAll(/window\.open\(([^)]*)\)/g)];assert.equal(opens.length,1,'exactly one window.open (the feedback bar)');assert.match(opens[0][1],/noopener/);assert.ok(!/fetch\(\s*['"`]https?:/.test(source));assert.ok(!/navigator\.sendBeacon/.test(source));const tpl=readFileSync(new URL('../.github/ISSUE_TEMPLATE/feedback.yml',import.meta.url),'utf8');assert.match(tpl,/id: feedback/);assert.match(tpl,/id: version/);assert.match(tpl,/labels: \["feedback"\]/);});
 test('locale dictionaries: zh and en share the same keys, en has no CJK, host <html lang> drives detection',()=>{const from=source.indexOf('    const STR = {');const to=source.indexOf('    let locale = ');assert.ok(from>=0&&to>from);const ctx={document:{documentElement:{lang:''}},navigator:{language:''}};vm.createContext(ctx);vm.runInContext(source.slice(from,to).replace(/^\s*let locale = 'en'\s*$/m,'')+';this.STR=STR;this.detect=detectLocale',ctx);const zh=Object.keys(ctx.STR.zh).sort(),en=Object.keys(ctx.STR.en).sort();assert.deepEqual(zh,en,'zh/en key sets must match');assert.ok(zh.length>=60);for(const k of en){const v=ctx.STR.en[k];const s=typeof v==='function'?v(1,2):v;assert.ok(!/[\u4e00-\u9fff]/.test(s),'en.'+k+' contains CJK');assert.equal(typeof ctx.STR.zh[k],typeof v,'type mismatch for '+k);}assert.equal(ctx.STR.zh.feedbackPrompt,'给点儿意见？');assert.equal(ctx.STR.en.feedbackPrompt,'Any feedback?');ctx.document.documentElement.lang='zh-CN';assert.equal(ctx.detect(),'zh');ctx.document.documentElement.lang='en';assert.equal(ctx.detect(),'en');ctx.document.documentElement.lang='';ctx.navigator.language='zh-TW';assert.equal(ctx.detect(),'zh');ctx.navigator.language='fr-FR';assert.equal(ctx.detect(),'en');ctx.navigator.language='';assert.equal(ctx.detect(),'en');assert.ok(/new MutationObserver\(applyLocale\)/.test(source));assert.ok(/attributeFilter: \['lang'\]/.test(source));});
+
+test('corner geometry: clampToViewport never lets the box leave the viewport; dragging the bar to a new corner re-anchors expand there', () => {
+  const src = readFileSync(new URL('../lib/client.js', import.meta.url), 'utf8');
+  const a = src.indexOf('    function viewportSize()');
+  const b = src.indexOf('    /** Place the window after (re)mounting');
+  assert.ok(a > 0 && b > a, 'geometry block present');
+  const block = src.slice(a, b);
+  assert.match(block, /function clampToViewport\(left, top, width, height\)/);
+  assert.match(block, /Math\.max\(0, Math\.min\(left, v\.width - width\)\)/);
+  assert.match(block, /Math\.max\(0, Math\.min\(top, v\.height - height\)\)/);
+  const ctx = { document: { documentElement: { clientWidth: 1000, clientHeight: 700 } }, window: { innerWidth: 1000, innerHeight: 700 }, CORNER_GAP: 14 };
+  vm.createContext(ctx);
+  vm.runInContext(block + '\nthis.clampToViewport = clampToViewport; this.cornerRect = cornerRect; this.nearestCorner = nearestCorner;', ctx);
+  assert.deepEqual({ ...ctx.clampToViewport(-50, -50, 300, 240) }, { left: 0, top: 0 });
+  assert.deepEqual({ ...ctx.clampToViewport(900, 600, 300, 240) }, { left: 700, top: 460 });
+  assert.deepEqual({ ...ctx.clampToViewport(100, 100, 300, 240) }, { left: 100, top: 100 });
+  for (const c of ['tl', 'tr', 'bl', 'br']) {
+    const r = ctx.cornerRect(c, 150, 36);
+    assert.ok(r.left >= 0 && r.top >= 0 && r.left + r.width <= 1000 && r.top + r.height <= 700, c + ' bar inside viewport');
+    assert.equal(ctx.nearestCorner(r), c, c + ' round-trips through nearestCorner');
+  }
+  const dock = src.slice(src.indexOf('    function dockBarToCorner'), src.indexOf('    /** Remember where the window should come back'));
+  assert.match(dock, /if \(uiPrefs\.collapsedCorner !== corner\) uiPrefs\.expand = \{ mode: 'edge', corner, left: null, top: null \}/, 'bar moved to a new corner re-anchors the expanded layout there');
+  assert.match(src, /window\.addEventListener\('resize', resizeHandler\)/, 'resize re-runs placement');
+  assert.match(src, /window\.removeEventListener\('resize', resizeHandler\)/, 'resize listener is cleaned up');
+});
+

@@ -28,13 +28,13 @@ Requires a DeepSeek Harness Web installation and pnpm. This repository ships rea
 Latest tagged release:
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.1
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.2
 ```
 
 Or download the release tarball and run:
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.2.1.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.2.2.tgz
 ```
 
 To pin an exact commit instead of a tag:

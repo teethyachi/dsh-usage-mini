@@ -28,13 +28,13 @@
 最新的 tag 版本：
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.1
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.2
 ```
 
 或者下载 release 的 tarball：
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.2.1.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.2.2.tgz
 ```
 
 想钉死到某个具体 commit：
