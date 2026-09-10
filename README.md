@@ -36,13 +36,13 @@ dsh plugin --profile web add dsh-usage-mini
 From the latest tagged release on GitHub:
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.2
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.3
 ```
 
 Or download the release tarball and run:
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.2.2.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.2.3.tgz
 ```
 
 To pin an exact commit instead of a tag:
@@ -139,6 +139,6 @@ If this widget saves you a tab, a GitHub Star or a Like on the Hugging Face Spac
 
 ## Release verification
 
-Run `npm test` and `npm pack --dry-run`. Automated checks cover package wiring, the compatibility manifest shape, the feedback URL builder and the balance-refresh regression; they are not a claim of fresh live-account testing on every provider or browser, nor of runtime validation on any DSH version. The installed personal copy is not modified by this publication.
+Run `npm test` and `npm pack --dry-run`. With Playwright installed, run `npm run test:browser` (optionally set `PLAYWRIGHT_MODULE` and `CHROME_PATH`). Browser regressions cover pending-request disposal, animation cleanup, remounts, and language-switch positioning. See [versioned runtime evidence](docs/store-evidence.md) for the tested DSH build. These checks do not certify live provider accounts or untested browsers.
 
 MIT licensed. Contributions welcome—especially accurate failure states, not confident-looking zeroes.

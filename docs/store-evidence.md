@@ -1,3 +1,28 @@
+# Runtime evidence — dsh-usage-mini 0.2.3
+
+Recorded 2026-09-10 on Windows, Node v22.23.2, official npm `@deepseek-ai/dsh@0.1.2-rc.1`.
+
+## Current artifact gates
+
+| Gate | Result | Evidence |
+|---|---|---|
+| install | **pass** | Install local dsh-usage-mini-0.2.3.tgz into a disposable DSH_HOME; plugin list contains dsh-usage-mini. |
+| **start (full `dsh --profile web`)** | **pass** | Isolated web profile started on 127.0.0.1:3631; no access to the personal profile or port 3080. |
+| **browser acceptance** | **pass** | Chromium via Playwright: zh-CN and en-US render the actual widget through the DSH module loader; localized feedback placeholders correct; zero page errors. Upstream plugins absent, so missing-channel states exercised, not real accounts. |
+| uninstall | **pass** | DSH CLI remove completed successfully after the test server stopped. |
+
+Standalone browser regression: six scenarios pass — late RPC on dispose, observer teardown, collapsed label re-docking after a language switch, dispose during collapse, dispose during expand, and rapid remount with stale requests. These are mocked RPC tests, separate from the real-host acceptance above.
+
+Reproduce the lifecycle tests from the checkout using npm run test:browser with Playwright installed. Optional PLAYWRIGHT_MODULE selects its module path; CHROME_PATH selects an installed Chromium executable. Runtime harness: useage-window-campaign/scripts/runtime-023.cjs. Local raw output: useage-window-campaign/evidence/runtime-023.json and runtime-023-{zh-CN,en-US}.png.
+
+The host CLI split a tarball path containing spaces on this Windows run; copying the artifact to a space-free temporary path allowed installation. No plugin code change was needed for that host issue.
+
+Only @deepseek-ai/dsh@0.1.2-rc.1 is declared compatible. Other manifest versions remain unknown. OS and Node support declarations are unchanged. No new provider endpoints or credentials were used.
+
+---
+
+## Historical 0.2.1 evidence
+
 # Disposable-Profile evidence for DSH STORE (dsh-usage-mini 0.2.1)
 
 Recorded 2026-09-08 on Windows 11, Node v22.23.2, pnpm 11.24.0, official npm `@deepseek-ai/dsh@0.1.2-rc.1`. All commands ran with `DSH_HOME` pointed at a throwaway directory (`<scratch>`); the author's real `~/.dsh`, credentials and running web server (port 3080) were not touched and were verified still serving afterwards. No provider, account or inference calls were made. Placeholders: `<dsh-bin>` = `<scratch>/cli/node_modules/@deepseek-ai/dsh/lib/bin.js`.

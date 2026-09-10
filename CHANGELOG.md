@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.3
+
+- Ignore late RPC responses after plugin disposal or remount; no stale update or null-root error.
+- Disconnect the language observer and safely cancel collapse/expand animations on disposal.
+- Reposition after language switches and animation completion so the wider English collapsed label stays on screen.
+- Add six executable Chromium lifecycle/locale regressions (`npm run test:browser`).
+- Include the README banner and linked evidence/blog documents in the npm tarball.
+- Same four RPC paths and provider scope; no new runtime dependencies or permissions.
+
 ## 0.2.2
 
 - All four corners work. Before: dragging the expanded window toward the right or bottom edge let it run off-screen (only the top/left were clamped), so top-right / bottom-left / bottom-right "custom" spots came back partly hidden after collapse → expand. Now: drag and restore are clamped to the viewport on both axes; a collapsed bar dragged to a new corner expands at that corner instead of flying back to the old spot; a viewport resize re-runs placement. Reproducible with `useage-window-campaign/scripts/corners.cjs` (headless Chromium, drag/collapse/expand at each corner); test 8 locks the geometry. The 掘金 write-up admitted "另外三个角布局是坏的" — this is that fix.

@@ -36,13 +36,13 @@ dsh plugin --profile web add dsh-usage-mini
 从 GitHub 最新的 tag 版本装：
 
 ```sh
-dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.2
+dsh plugin --profile web add github:teethyachi/dsh-usage-mini#v0.2.3
 ```
 
 或者下载 release 的 tarball：
 
 ```sh
-dsh plugin --profile web add ./dsh-usage-mini-0.2.2.tgz
+dsh plugin --profile web add ./dsh-usage-mini-0.2.3.tgz
 ```
 
 想钉死到某个具体 commit：
@@ -139,6 +139,6 @@ dsh plugin --profile web remove dsh-usage-mini
 
 ## 发布前的自查
 
-跑 `npm test` 和 `npm pack --dry-run`。自动化检查覆盖打包接线、兼容性 manifest 的形状、反馈 URL 构造和余额刷新的回归；它们不代表在每个服务方、每个浏览器上都做过新鲜的真账号测试，也不代表在任何 DSH 版本上做过运行时验证。发布这件事不会改动本地已安装的那份副本。
+跑 `npm test` 和 `npm pack --dry-run`。安装 Playwright 后可跑 `npm run test:browser`（可设置 `PLAYWRIGHT_MODULE` 与 `CHROME_PATH`），覆盖停用时请求未返回、动画清理、重新挂载和切换语言后的定位。DSH 实测版本见[运行时证据](docs/store-evidence.md)；这些测试不代表真账号或未测浏览器的兼容保证。
 
 MIT 许可。欢迎贡献——尤其欢迎准确的失败状态，而不是看起来很自信的一堆零。
