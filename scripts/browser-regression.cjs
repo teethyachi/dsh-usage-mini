@@ -70,6 +70,24 @@ const path = require('node:path');
   assert.equal(await p.evaluate(()=>window.localeEvents),1);
   assert.ok(await p.locator('.um-note.err').count()>0,'replacement requests still render');
  });
+ await run('viewport shrink during collapse settles inside new bounds',async p=>{
+  await p.evaluate(()=>window.flush()); await p.waitForTimeout(50);
+  await p.locator('.um-head button').first().click();
+  await p.setViewportSize({width:420,height:320}); await p.waitForTimeout(500);
+  assert.equal(await p.locator('#dsh-usage-mini-root.collapsed').count(),1);
+  const r=await p.locator('#dsh-usage-mini-root').boundingBox();
+  assert.ok(r.x>=0 && r.y>=0 && r.x+r.width<=420 && r.y+r.height<=320,JSON.stringify(r));
+ });
+ await run('language change during expand preserves new labels and bounds',async p=>{
+  await p.evaluate(()=>window.flush()); await p.waitForTimeout(50);
+  await p.locator('.um-head button').first().click(); await p.waitForTimeout(450);
+  await p.locator('.um-tab-open').click();
+  await p.evaluate(()=>document.documentElement.lang='en'); await p.waitForTimeout(500);
+  assert.equal(await p.locator('#dsh-usage-mini-root.collapsed').count(),0);
+  assert.equal(await p.locator('.um-fb-input').getAttribute('placeholder'),'Any feedback?');
+  const r=await p.locator('#dsh-usage-mini-root').boundingBox();
+  assert.ok(r.x>=0 && r.y>=0 && r.x+r.width<=1000 && r.y+r.height<=700,JSON.stringify(r));
+ });
  await browser.close();
  if(failures.length) process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1;});
